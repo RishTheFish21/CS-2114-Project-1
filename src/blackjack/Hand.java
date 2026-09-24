@@ -2,15 +2,23 @@ package blackjack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Represents the cards held by the player or the dealer and calculates their Blackjack total.
  *
- * @author rishad wyatt
- * @version 0.1
+ * @author Rishad Wyatt
+ * @version 1.0
  */
 public class Hand {
 
+    /** The best possible hand total. */
+    private static final int BLACKJACK = 21;
+
+    /** Amount subtracted when an Ace changes from 11 to 1. */
+    private static final int ACE_REDUCTION = 10;
+
+    /** The cards in this hand. */
     private List<Card> cards;
 
     /**
@@ -24,14 +32,17 @@ public class Hand {
      * Adds a card to this hand.
      *
      * @param card the card to add
+     * @throws NullPointerException if {@code card} is null
      */
     public void addCard(Card card) {
-        cards.add(card);
+        cards.add(Objects.requireNonNull(card, "Cannot add a null card to a hand"));
     }
 
     /**
      * Calculates the best Blackjack total for this hand.
      *
+     * <p>Every Ace starts out worth 11 (a "soft" Ace). While the total is over 21 and a
+     * soft Ace remains, that Ace is changed to 1 by subtracting 10.</p>
      *
      * @return the total value of the hand
      */
@@ -41,13 +52,13 @@ public class Hand {
 
         for (Card card : cards) {
             total += card.getBaseValue();
-            if (card.getRank().equals("Ace")) {
+            if ("Ace".equals(card.getRank())) {
                 softAces++;
             }
         }
 
-        while (total > 21 && softAces > 0) {
-            total -= 10;
+        while (total > BLACKJACK && softAces > 0) {
+            total -= ACE_REDUCTION;
             softAces--;
         }
         return total;
@@ -59,7 +70,7 @@ public class Hand {
      * @return {@code true} if the hand is a natural Blackjack
      */
     public boolean isNaturalBlackjack() {
-        return cards.size() == 2 && calculateTotal() == 21;
+        return cards.size() == 2 && calculateTotal() == BLACKJACK;
     }
 
     /**
@@ -68,7 +79,7 @@ public class Hand {
      * @return {@code true} if the total is over 21
      */
     public boolean isBust() {
-        return calculateTotal() > 21;
+        return calculateTotal() > BLACKJACK;
     }
 
     /**
@@ -88,19 +99,20 @@ public class Hand {
     }
 
     /**
-     * Returns the cards in this hand as a comma-separated list.
+     * Returns the cards in this hand as a comma-separated list,
+     * e.g. "Ace of Spades, 7 of Hearts".
      *
-     * @return the hand as a string
+     * @return the hand as a string, or an empty string if the hand is empty
      */
     @Override
     public String toString() {
-        String result = "";
+        StringBuilder sb = new StringBuilder();
         for (int i = 0; i < cards.size(); i++) {
             if (i > 0) {
-                result += ", ";
+                sb.append(", ");
             }
-            result += cards.get(i);
+            sb.append(cards.get(i));
         }
-        return result;
+        return sb.toString();
     }
 }

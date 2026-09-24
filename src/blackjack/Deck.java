@@ -3,40 +3,37 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-
 /**
- * Represents a standard 52-card deck of playing cards.
+ * Represents a standard 52-card deck that rebuilds and reshuffles itself when it runs out.
  *
- * @author Syed Rishad
- * @version 0.1
+ * @author Aniket
+ * @version 1.0
  */
 public class Deck {
 
-    private static final String[] RANKS = {
-        "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", 
-        "Ace"
-    };
+    /** Number of cards in a full deck. */
+    private static final int STANDARD_DECK_SIZE = 52;
 
-    private static final String[] SUITS = {"Hearts", "Diamonds", "Clubs",
-        "Spades"};
-
+    /** The cards currently left in the deck. The top of the deck is index 0. */
     private List<Card> cards;
 
     /**
      * Creates a new deck containing all 52 cards in order.
+     * Call {@link #shuffle()} before dealing.
      */
     public Deck() {
-        cards = new ArrayList<>();
+        cards = new ArrayList<>(STANDARD_DECK_SIZE);
         initializeDeck();
     }
 
     /**
-     * Fills the deck with one card for every rank and suit combination.
+     * Removes any remaining cards and fills the deck with one card for every
+     * rank and suit combination.
      */
     private void initializeDeck() {
         cards.clear();
-        for (String suit : SUITS) {
-            for (String rank : RANKS) {
+        for (String suit : Card.SUITS) {
+            for (String rank : Card.RANKS) {
                 cards.add(new Card(rank, suit));
             }
         }
@@ -51,7 +48,7 @@ public class Deck {
 
     /**
      * Removes and returns the top card of the deck. If the deck is empty, it is
-     * rebuilt with all 52 cards and shuffled before drawing.
+     * rebuilt with all 52 cards and shuffled first, so this method never fails.
      *
      * @return the top card
      */
