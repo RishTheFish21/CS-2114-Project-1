@@ -1,24 +1,19 @@
 package blackjack;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 import java.util.Objects;
 
 /**
  * Represents the cards held by the player or the dealer and calculates their Blackjack total.
  *
- * @author Rishad Wyatt
- * @version 1.0
+ * @author Aniket
+ * @version 1.1
  */
 public class Hand {
 
-    /** The best possible hand total. */
     private static final int BLACKJACK = 21;
-
-    /** Amount subtracted when an Ace changes from 11 to 1. */
     private static final int ACE_REDUCTION = 10;
 
-    /** The cards in this hand. */
     private List<Card> cards;
 
     /**
@@ -32,16 +27,15 @@ public class Hand {
      * Adds a card to this hand.
      *
      * @param card the card to add
-     * @throws NullPointerException if {@code card} is null
      */
     public void addCard(Card card) {
-        cards.add(Objects.requireNonNull(card, "Cannot add a null card to a hand"));
+        cards.add(card);
     }
 
     /**
      * Calculates the best Blackjack total for this hand.
      *
-     * <p>Every Ace starts out worth 11 (a "soft" Ace). While the total is over 21 and a
+     * <p>Every Ace starts out worth 11. While the total is over 21 and a
      * soft Ace remains, that Ace is changed to 1 by subtracting 10.</p>
      *
      * @return the total value of the hand
@@ -67,7 +61,7 @@ public class Hand {
     /**
      * Checks whether this hand is a natural Blackjack (21 with exactly two cards).
      *
-     * @return {@code true} if the hand is a natural Blackjack
+     * @return true if the hand is a natural Blackjack
      */
     public boolean isNaturalBlackjack() {
         return cards.size() == 2 && calculateTotal() == BLACKJACK;
@@ -76,7 +70,7 @@ public class Hand {
     /**
      * Checks whether this hand has gone over 21.
      *
-     * @return {@code true} if the total is over 21
+     * @return true if the total is over 21
      */
     public boolean isBust() {
         return calculateTotal() > BLACKJACK;
@@ -90,19 +84,31 @@ public class Hand {
     }
 
     /**
-     * Returns the cards in this hand. The returned list cannot be modified.
+     * Returns the cards in this hand.
      *
-     * @return a read-only list of the cards
+     * @return the list of cards
      */
     public List<Card> getCards() {
-        return Collections.unmodifiableList(cards);
+        return cards;
+    }
+
+    /**
+     * Draws every card in this hand as ASCII art, side by side.
+     *
+     * @return the hand as multi-line ASCII art
+     */
+    public String toAsciiArt() {
+        List<String[]> arts = new ArrayList<>();
+        for (Card card : cards) {
+            arts.add(card.toAsciiArt());
+        }
+        return Card.renderSideBySide(arts);
     }
 
     /**
      * Returns the cards in this hand as a comma-separated list,
-     * e.g. "Ace of Spades, 7 of Hearts".
      *
-     * @return the hand as a string, or an empty string if the hand is empty
+     * @return the hand as a string
      */
     @Override
     public String toString() {

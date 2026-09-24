@@ -1,6 +1,5 @@
 package blackjack;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.List;
 
 /**
@@ -11,15 +10,11 @@ import java.util.List;
  */
 public class Deck {
 
-    /** Number of cards in a full deck. */
     private static final int STANDARD_DECK_SIZE = 52;
-
-    /** The cards currently left in the deck. The top of the deck is index 0. */
     private List<Card> cards;
 
     /**
      * Creates a new deck containing all 52 cards in order.
-     * Call {@link #shuffle()} before dealing.
      */
     public Deck() {
         cards = new ArrayList<>(STANDARD_DECK_SIZE);
@@ -43,12 +38,18 @@ public class Deck {
      * Shuffles the cards into a random order.
      */
     public void shuffle() {
-        Collections.shuffle(cards);
+        for (int i = cards.size() - 1; i > 0; i--) {
+            int j = (int) (Math.random() * (i + 1));
+
+            Card temp = cards.get(i);
+            cards.set(i, cards.get(j));
+            cards.set(j, temp);
+        }
     }
 
     /**
      * Removes and returns the top card of the deck. If the deck is empty, it is
-     * rebuilt with all 52 cards and shuffled first, so this method never fails.
+     * rebuilt with all 52 cards and shuffled first
      *
      * @return the top card
      */
