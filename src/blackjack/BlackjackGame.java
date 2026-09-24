@@ -8,40 +8,31 @@ package blackjack;
 public class BlackjackGame {
 
     /**
-     * Deals a test hand to a player and a dealer and checks some Ace totals.
+     * Places some test bets and checks the payouts.
      *
      * @param args command-line arguments (not used)
      */
     public static void main(String[] args) {
-        Deck deck = new Deck();
-        deck.shuffle();
+        Player player = new Player(100.0);
+        System.out.println("Starting balance: " + player.getBalance());
 
-        Hand playerHand = new Hand();
-        Hand dealerHand = new Hand();
-        playerHand.addCard(deck.drawCard());
-        dealerHand.addCard(deck.drawCard());
-        playerHand.addCard(deck.drawCard());
-        dealerHand.addCard(deck.drawCard());
+        System.out.println("Bet 0 accepted? " + player.placeBet(0) + " (expected false)");
+        System.out.println("Bet 500 accepted? " + player.placeBet(500) + " (expected false)");
 
-        System.out.println("Player: " + playerHand + " (Total: " + playerHand.calculateTotal() + ")");
-        System.out.println("Dealer: " + dealerHand + " (Total: " + dealerHand.calculateTotal() + ")");
+        player.placeBet(10);
+        player.receivePayout(2.0);
+        System.out.println("After winning a $10 bet: " + player.getBalance() + " (expected 110.0)");
 
-       
-        Hand aceTest = new Hand();
-        aceTest.addCard(new Card("Ace", "Hearts"));
-        aceTest.addCard(new Card("Ace", "Spades"));
-        aceTest.addCard(new Card("9", "Clubs"));
-        System.out.println("A + A + 9 = " + aceTest.calculateTotal() + " (expected 21)");
+        player.placeBet(10);
+        player.receivePayout(2.5);
+        System.out.println("After a $10 natural: " + player.getBalance() + " (expected 125.0)");
 
-        Hand naturalTest = new Hand();
-        naturalTest.addCard(new Card("Ace", "Hearts"));
-        naturalTest.addCard(new Card("King", "Hearts"));
-        System.out.println("A + K natural? " + naturalTest.isNaturalBlackjack() + " (expected true)");
+        player.placeBet(10);
+        player.receivePayout(0.5);
+        System.out.println("After surrendering $10: " + player.getBalance() + " (expected 120.0)");
 
-        
-        for (int i = 0; i < 60; i++) {
-            deck.drawCard();
-        }
-        System.out.println("Cards left after 60 more draws: " + deck.remainingCards());
+        player.placeBet(20);
+        player.receivePayout(0.0);
+        System.out.println("After losing $20: " + player.getBalance() + " (expected 100.0)");
     }
 }
