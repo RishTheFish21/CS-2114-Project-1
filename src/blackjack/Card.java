@@ -1,3 +1,4 @@
+package blackjack;
 /**
  * Represents a single playing card with a rank and a suit.
  *
@@ -6,17 +7,15 @@
  */
 public class Card {
 
-    /** The rank of the card, e.g. "2", "10", "Jack" or "Ace". */
     private final String rank;
 
-    /** The suit of the card, e.g. "Hearts" or "Spades". */
     private final String suit;
 
     /**
      * Creates a new card.
      *
-     * @param rank the rank of the card ("2" through "10", "Jack", "Queen", "King" or "Ace")
-     * @param suit the suit of the card ("Hearts", "Diamonds", "Clubs" or "Spades")
+     * @param rank the rank of the card 
+     * @param suit the suit of the card 
      */
     public Card(String rank, String suit) {
         this.rank = rank;
@@ -58,7 +57,7 @@ public class Card {
     }
 
     /**
-     * Returns a readable description of the card, e.g. "Ace of Spades".
+     * Returns a readable description of the card
      *
      * @return the card as a string
      */

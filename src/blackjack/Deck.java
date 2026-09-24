@@ -1,6 +1,8 @@
+package blackjack;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+
 
 /**
  * Represents a standard 52-card deck of playing cards.
@@ -10,15 +12,14 @@ import java.util.List;
  */
 public class Deck {
 
-    /** All ranks in a standard deck. */
     private static final String[] RANKS = {
-        "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", "Ace"
+        "2", "3", "4", "5", "6", "7", "8", "9", "10", "Jack", "Queen", "King", 
+        "Ace"
     };
 
-    /** All suits in a standard deck. */
-    private static final String[] SUITS = {"Hearts", "Diamonds", "Clubs", "Spades"};
+    private static final String[] SUITS = {"Hearts", "Diamonds", "Clubs",
+        "Spades"};
 
-    /** The cards currently left in the deck. The top of the deck is index 0. */
     private List<Card> cards;
 
     /**
@@ -49,12 +50,17 @@ public class Deck {
     }
 
     /**
-     * Removes and returns the top card of the deck.
+     * Removes and returns the top card of the deck. If the deck is empty, it is
+     * rebuilt with all 52 cards and shuffled before drawing.
      *
      * @return the top card
      */
     public Card drawCard() {
-        // TODO: handle an empty deck
+        if (cards.isEmpty()) {
+            System.out.println("[System] Reshuffling deck...");
+            initializeDeck();
+            shuffle();
+        }
         return cards.remove(0);
     }
 
