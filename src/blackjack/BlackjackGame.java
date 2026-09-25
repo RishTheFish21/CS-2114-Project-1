@@ -1,6 +1,5 @@
 package blackjack;
 import java.util.Arrays;
-import java.util.Locale;
 import java.util.Scanner;
 
 /**
@@ -10,7 +9,7 @@ import java.util.Scanner;
  * printed to the console.</p>
  *
  * @author Syed Rishad
- * @version 1.1
+ * @version 1.2
  */
 public class BlackjackGame {
 
@@ -33,16 +32,29 @@ public class BlackjackGame {
     private Scanner scanner;
 
     /**
-     * Sets up a new game with a $100.00 balance, empty hands and
-     * a shuffled deck.
+     * Sets up a new game with a $100.00 balance, empty hands, a
+     * shuffled deck and input read
      */
     public BlackjackGame() {
-        scanner = new Scanner(System.in);
-        player = new Player(INITIAL_BALANCE);
-        playerHand = new Hand();
-        dealerHand = new Hand();
-        deck = new Deck();
+        this(new Deck(), new Scanner(System.in));
         deck.shuffle();
+    }
+
+    /**
+     * Sets up a new game that deals from the given deck and reads
+     * from the given input. The deck is used exactly as it is, so a
+     * test can stack it with known cards, and the input can come
+     * from a string instead of the keyboard.
+     *
+     * @param deck the deck to deal from
+     * @param input where the player's answers are read from
+     */
+    public BlackjackGame(Deck deck, Scanner input) {
+        this.deck = deck;
+        this.scanner = input;
+        this.player = new Player(INITIAL_BALANCE);
+        this.playerHand = new Hand();
+        this.dealerHand = new Hand();
     }
 
     /**
@@ -51,6 +63,42 @@ public class BlackjackGame {
     public static void main(String[] args) {
         BlackjackGame game = new BlackjackGame();
         game.startGame();
+    }
+
+    /**
+     * Returns how much money the player has right now.
+     *
+     * @return the player's balance
+     */
+    public double getPlayerBalance() {
+        return player.getBalance();
+    }
+
+    /**
+     * Returns the bet that is currently on the table.
+     *
+     * @return the player's current bet
+     */
+    public double getCurrentBet() {
+        return player.getCurrentBet();
+    }
+
+    /**
+     * Returns the player's hand.
+     *
+     * @return the cards the player is holding
+     */
+    public Hand getPlayerHand() {
+        return playerHand;
+    }
+
+    /**
+     * Returns the dealer's hand.
+     *
+     * @return the cards the dealer is holding
+     */
+    public Hand getDealerHand() {
+        return dealerHand;
     }
 
     /**
@@ -163,7 +211,7 @@ public class BlackjackGame {
             } else if (action.equals("stand")) {
                 System.out.println("You stand on " + playerHand.calculateTotal() + ".");
                 return true;
-    
+
             }
         }
     }
